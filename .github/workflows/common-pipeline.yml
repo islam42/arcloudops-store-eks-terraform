@@ -1,0 +1,64 @@
+name: Terraform CI/CD Pipeline
+
+on:
+  workflow_call:
+    inputs:
+      environment:
+        description: "Environment Name (production, staging, development)"
+        required: true
+      kubeconfig:
+        description: "Kubeconfig Data"
+        required: true
+      aws_access_key_id:
+        description: "AWS Access Key"
+        required: true
+      aws_secret_access_key:
+        description: "AWS Secret Key"
+        required: true
+
+jobs:
+  deploy:
+    name: Deploy to EKS
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v2
+      
+      - name: Terraform Setup and Apply
+        uses: hashicorp/setup-terraform@v3
+        with:
+          terraform_version: 1.5.7
+
+      - name: Terraform Init
+        run: terraform init
+        working-directory: ./deployment/terraform/terraform-provision-ekscluster-use-case-1
+        run: | 
+            terraform init -reconfigure \
+            -backend-config="bucket=${{ secrets.BACKEND_BUCKET }}" \
+            -backend-config="key=${{ vars.BACKEND_KEY }}" \
+            -backend-config="region=${{ vars.BACKEND_REGION }}" \
+            -backend-config="encrypt=true" \
+            -backend-config="dynamodb_table=${{ secrets.DYNAMODB_TABLE }}"
+
+      - name: Terraform Format
+        id: format
+        run: terraform fmt -check
+
+      - name: Terraform Workspace
+        id: workspace
+        run: |
+            set -e
+            WORKSPACE="${{ vars.WORKSPACE_NAME }}"
+            if terraform workspace list | grep -q "\b$WORKSPACE\b"; then
+                terraform workspace select "$WORKSPACE"
+            else
+                terraform workspace new "$WORKSPACE"
+            fi 
+      - name: Terraform Plan
+        run: terraform plan -out=tfplan -var="environment=${{ inputs.environment }}"
+        working-directory: ./deployment/terraform/terraform-provision-ekscluster-use-case-1
+
+      - name: Terraform Apply
+        run: terraform apply -auto-approve
+        working-directory: ./deployment/terraform/terraform-provision-ekscluster-use-case-1
