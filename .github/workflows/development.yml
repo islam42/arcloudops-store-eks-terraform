@@ -10,7 +10,7 @@ on:
       branches:
         - development
         - feature/add_github_workflow_for_development_environment
-    pull_request_target:
+    pull_request:
       types: [review_requested, closed]
       branches: [development]
 
@@ -97,6 +97,6 @@ jobs:
         run: terraform plan
     
       - name: Terraform Apply
-        if: github.event_name == 'pull_request_target'
+        if: github.event_name == 'pull_request' && github.event.pull_request.merged == true
         id: apply
         run: terraform apply -auto-approve
