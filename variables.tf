@@ -2,10 +2,6 @@ variable "region" {
   description = "The AWS region to deploy resources."
 }
 
-variable "cluster-name" {
-  description = "The name of the EKS cluster."
-}
-
 variable "vpc_cidr_block" {
   type        = map(string)
   description = "The CIDR block for the VPC."

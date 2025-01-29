@@ -1,7 +1,7 @@
 # Purpose: Create EKS cluster
 
 resource "aws_iam_role" "eks_assume_role" {
-  name = "${var.cluster-name}-eks-role"
+  name = "${local.cluster_name}-eks-role"
   assume_role_policy = jsonencode({
     Version = "2012-10-17",
     Statement = [
@@ -83,7 +83,7 @@ resource "aws_eks_node_group" "arcloudops-node-group" {
 }
 
 resource "aws_iam_role" "eks_node_role" {
-  name = "${var.cluster-name}-node-role"
+  name = "${local.cluster_name}-role"
 
   assume_role_policy = jsonencode({
     Version = "2012-10-17",
