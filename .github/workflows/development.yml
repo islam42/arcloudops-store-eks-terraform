@@ -70,8 +70,14 @@ jobs:
     
       - name: Terraform Workspace
         id: workspace
-        run: terraform workspace select ${{ vars.WORKSPACE_NAME }}
-
+        run: |
+          set -e
+          WORKSPACE="${{ vars.WORKSPACE_NAME }}"
+          if terraform workspace list | grep -q "\b$WORKSPACE\b"; then
+            terraform workspace select "$WORKSPACE"
+          else
+            terraform workspace new "$WORKSPACE"
+          fi 
       - name: Terraform Validate
         id: validate
         if: (success() || failure())
