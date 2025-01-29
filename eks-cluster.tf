@@ -57,9 +57,9 @@ resource "aws_eks_node_group" "arcloudops-node-group" {
   instance_types = [var.aws_instance_type]
 
   scaling_config {
-    desired_size = var.node_desired_capacity
-    max_size     = var.node_maximum_capacity
-    min_size     = var.node_minumum_capacity
+    desired_size = var.node_desired_capacity[terraform.workspace]
+    max_size     = var.node_maximum_capacity[terraform.workspace]
+    min_size     = var.node_minumum_capacity[terraform.workspace]
   }
 
   // for rolling updates and zero downtime deployments
