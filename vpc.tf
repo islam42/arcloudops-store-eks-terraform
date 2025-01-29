@@ -4,9 +4,9 @@ module "vpc" {
 
   cidr = var.vpc_cidr_block[terraform.workspace]
 
-  azs             = slice(data.aws_availability_zones.available.names, 0, var.vpc_subnet_count)
-  public_subnets  = [for subnet in range(var.vpc_subnet_count) : cidrsubnet(var.vpc_cidr_block[terraform.workspace], var.vpc_subnet_mask, subnet)]
-  private_subnets = [for subnet in range(var.vpc_subnet_count, (var.vpc_subnet_count * 2)) : cidrsubnet(var.vpc_cidr_block[terraform.workspace], var.vpc_subnet_mask, subnet)]
+  azs             = slice(data.aws_availability_zones.available.names, 0, var.vpc_subnet_count[terraform.workspace])
+  public_subnets  = [for subnet in range(var.vpc_subnet_count[terraform.workspace]) : cidrsubnet(var.vpc_cidr_block[terraform.workspace], var.vpc_subnet_mask[terraform.workspace], subnet)]
+  private_subnets = [for subnet in range(var.vpc_subnet_count[terraform.workspace], (var.vpc_subnet_count[terraform.workspace] * 2)) : cidrsubnet(var.vpc_cidr_block[terraform.workspace], var.vpc_subnet_mask[terraform.workspace], subnet)]
 
 
   # The following tags are required for the kubernetes cluster to work with the subnets
