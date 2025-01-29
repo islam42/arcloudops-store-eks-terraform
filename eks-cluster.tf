@@ -1,7 +1,7 @@
 # Purpose: Create EKS cluster
 
 resource "aws_iam_role" "eks_assume_role" {
-  name = "${var.cluster-name}-eks-role"
+  name = "${local.cluster_name}-eks-role"
   assume_role_policy = jsonencode({
     Version = "2012-10-17",
     Statement = [
@@ -49,17 +49,17 @@ resource "aws_eks_cluster" "arcloudops-cluster" {
 
 resource "aws_eks_node_group" "arcloudops-node-group" {
   cluster_name    = aws_eks_cluster.arcloudops-cluster.name
-  node_group_name = "arcloudops-node-group"
+  node_group_name = "${local.cluster_name}-nodegroup"
   node_role_arn   = aws_iam_role.eks_node_role.arn
 
   subnet_ids = module.vpc.public_subnets
 
-  instance_types = [var.instance_type]
+  instance_types = [var.aws_instance_type]
 
   scaling_config {
-    desired_size = var.desired_capacity
-    max_size     = var.maximum_capacity
-    min_size     = var.minumum_capacity
+    desired_size = var.node_desired_capacity[terraform.workspace]
+    max_size     = var.node_maximum_capacity[terraform.workspace]
+    min_size     = var.node_minumum_capacity[terraform.workspace]
   }
 
   // for rolling updates and zero downtime deployments
@@ -83,7 +83,7 @@ resource "aws_eks_node_group" "arcloudops-node-group" {
 }
 
 resource "aws_iam_role" "eks_node_role" {
-  name = "${var.cluster-name}-node-role"
+  name = "${local.cluster_name}-role"
 
   assume_role_policy = jsonencode({
     Version = "2012-10-17",
