@@ -15,5 +15,5 @@ provider "kubernetes" {
 }
 
 provider "aws" {
-  region     = var.region
+  region = var.region
 }

@@ -7,7 +7,7 @@ variable "cluster-name" {
 }
 
 variable "vpc_cidr_block" {
-  type = map(string)
+  type        = map(string)
   description = "The CIDR block for the VPC."
 }
 
@@ -42,15 +42,15 @@ variable "node_minumum_capacity" {
 
 variable "billing_code" {
   description = "The billing code for the resources."
-  
+
 }
 
 variable "project" {
   description = "The project name for the resources."
-  
+
 }
 
 variable "company" {
   description = "The company name for the resources."
-  
+
 }
