@@ -2,26 +2,23 @@ name: Terraform CI/CD Pipeline
 
 on:
   workflow_call:
-    inputs:
-      environment:
-        description: "Environment Name (production, staging, development)"
-        required: true
-      kubeconfig:
-        description: "Kubeconfig Data"
-        required: true
-      aws_access_key_id:
-        description: "AWS Access Key"
-        required: true
-      aws_secret_access_key:
-        description: "AWS Secret Key"
-        required: true
+    inputs: *common_inputs
+    secrets: *secrets
+
+env: *env
 
 jobs:
-  deploy:
+  plan_and_apply:
     name: Deploy to EKS
     runs-on: ubuntu-latest
 
     steps:
+      - name: Configure AWS Credentials
+        uses: aws-actions/configure-aws-credentials@v4
+        with:
+            role-to-assume: ${{ secrets.AWS_ROLE_TO_ASSUME }}
+            role-session-name: ${{ vars.SESSION_NAME }}
+            aws-region: ${{ inputs.aws_region }}
       - name: Checkout repository
         uses: actions/checkout@v2
       
@@ -37,7 +34,7 @@ jobs:
             terraform init -reconfigure \
             -backend-config="bucket=${{ secrets.BACKEND_BUCKET }}" \
             -backend-config="key=${{ vars.BACKEND_KEY }}" \
-            -backend-config="region=${{ vars.BACKEND_REGION }}" \
+            -backend-config="region=${{ inputs.backend_region }}" \
             -backend-config="encrypt=true" \
             -backend-config="dynamodb_table=${{ secrets.DYNAMODB_TABLE }}"
 
@@ -49,16 +46,22 @@ jobs:
         id: workspace
         run: |
             set -e
-            WORKSPACE="${{ vars.WORKSPACE_NAME }}"
+            WORKSPACE="${{ inputs.workspace_name }}"
             if terraform workspace list | grep -q "\b$WORKSPACE\b"; then
                 terraform workspace select "$WORKSPACE"
             else
                 terraform workspace new "$WORKSPACE"
             fi 
+      
+      - name: Terraform Validate
+        id: validate
+        if: (success() || failure())
+        run: terraform validate
       - name: Terraform Plan
-        run: terraform plan -out=tfplan -var="environment=${{ inputs.environment }}"
+        run: terraform plan
         working-directory: ./deployment/terraform/terraform-provision-ekscluster-use-case-1
 
       - name: Terraform Apply
+        if: github.event_name == 'pull_request' && github.event.pull_request.merged == true
         run: terraform apply -auto-approve
-        working-directory: ./deployment/terraform/terraform-provision-ekscluster-use-case-1
+        working-directory: ./deployment/terraform/terraform-provision-ekscluster-use-case-1    

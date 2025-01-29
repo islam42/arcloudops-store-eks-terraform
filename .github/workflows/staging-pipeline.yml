@@ -1,0 +1,22 @@
+name: Staging Pipeline
+
+on:
+  push:
+    branches: [staging]
+  pull_request:
+    types: [closed]
+    branches: [staging]
+
+jobs:
+  call-common:
+    uses: ./.github/workflows/common-pipeline.yml
+    with:
+      environment: "staging"
+      aws_region: ${{ vars.AWS_REGION }}
+      billing_code: ${{ vars.BILLING_CODE }}
+      aws_instance_type: ${{ vars.AWS_INSTANCE_TYPE }}
+      backend_region: ${{ vars.BACKEND_REGION }}
+      eks_version: ${{ vars.EKS_VERSION }}
+      workspace_name: ${{ vars.WORKSPACE_NAME }}
+    secrets: inherit
+      

@@ -5,7 +5,7 @@ terraform {
       version = "5.83.0"
     }
   }
-  # backend "s3" {}
+  backend "s3" {}
 }
 
 provider "kubernetes" {
