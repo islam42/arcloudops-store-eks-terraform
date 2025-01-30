@@ -59,7 +59,7 @@ jobs:
             terraform init -reconfigure \
             -backend-config="bucket=${{ vars.BACKEND_BUCKET }}" \
             -backend-config="key=${{ vars.BACKEND_KEY }}" \
-            -backend-config="region=${{ vars.BACKEND_BUCKET }}" \
+            -backend-config="region=${{ vars.BACKEND_REGION }}" \
             -backend-config="encrypt=true" \
             -backend-config="dynamodb_table=${{ vars.DYNAMODB_TABLE }}"
 
