@@ -9,7 +9,7 @@ on:
     push:
       branches:
         - development
-        - feature/add_github_workflow_for_development_environment
+        - feature/add_workflows_for_staging_and_production_environments
     pull_request:
       types: [closed]
       branches: [development]
