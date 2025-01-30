@@ -24,6 +24,7 @@ env:
 
 jobs:
   call-common:
+    runs-on: ubuntu-latest
     steps:
       - name: Show Inputs
         run: |
