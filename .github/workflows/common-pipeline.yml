@@ -19,7 +19,7 @@ env:
     TF_VAR_vpc_subnet_mask: ${{ vars.VPC_SUBNET_MASK }}
     TF_VAR_project: ${{ vars.PROJECT }}
     TF_VAR_company: ${{ vars.COMPANY }}
-    TF_VAR_region: ${{ inputs.aws_region }}
+    TF_VAR_region: ${{ vars.AWS_REGION }}
     TF_VAR_node_desired_capacity: ${{ vars.NODE_DESIRED_CAPACITY }}
     TF_VAR_node_maximum_capacity: ${{ vars.NODE_MAXIMUM_CAPACITY }}
     TF_VAR_node_minumum_capacity: ${{ vars.NODE_MINUMUM_CAPACITY }}
