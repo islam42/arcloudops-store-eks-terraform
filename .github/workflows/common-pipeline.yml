@@ -55,7 +55,6 @@ jobs:
           terraform_version: 1.5.7
 
       - name: Terraform Init
-        working-directory: ./deployment/terraform/terraform-provision-ekscluster-use-case-1
         run: | 
             terraform init -reconfigure \
             -backend-config="bucket=${{ vars.BACKEND_BUCKET }}" \
@@ -85,9 +84,7 @@ jobs:
         run: terraform validate
       - name: Terraform Plan
         run: terraform plan
-        working-directory: ./deployment/terraform/terraform-provision-ekscluster-use-case-1
 
       - name: Terraform Apply
         if: github.event_name == 'pull_request' && github.event.pull_request.merged == true
-        run: terraform apply -auto-approve
-        working-directory: ./deployment/terraform/terraform-provision-ekscluster-use-case-1    
+        run: terraform apply -auto-approve 
