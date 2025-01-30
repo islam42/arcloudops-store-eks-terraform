@@ -4,9 +4,9 @@ on:
   workflow_call:
     inputs:
         environment:
-            description: 'The environment to deploy to'
+            type: string
+            description: environment to deploy to
             required: true
-            type: environment
 
 env:
     TF_INPUT: true
@@ -29,6 +29,7 @@ jobs:
   plan_and_apply:
     name: Deploy to EKS
     runs-on: ubuntu-latest
+    environment: ${{ inputs.environment }}
 
     steps:
       - name: Show Inputs
