@@ -12,8 +12,8 @@ env:
     TF_INPUT: true
     TF_IN_AUTOMATION: true
     TF_LOG: INFO
-    TF_VAR_aws_instance_type: ${{ inputs.aws_instance_type }}
-    TF_VAR_billing_code: ${{ inputs.billing_code }}
+    TF_VAR_aws_instance_type: ${{ vars.AWS_INSTANCE_TYPE }}
+    TF_VAR_billing_code: ${{ vars.BILLING_CODE }}
     TF_VAR_vpc_cidr_block: ${{ vars.VPC_CIDR_BLOCK }}
     TF_VAR_vpc_subnet_count: ${{ vars.VPC_SUBNET_COUNT }}
     TF_VAR_vpc_subnet_mask: ${{ vars.VPC_SUBNET_MASK }}
@@ -23,7 +23,7 @@ env:
     TF_VAR_node_desired_capacity: ${{ vars.NODE_DESIRED_CAPACITY }}
     TF_VAR_node_maximum_capacity: ${{ vars.NODE_MAXIMUM_CAPACITY }}
     TF_VAR_node_minumum_capacity: ${{ vars.NODE_MINUMUM_CAPACITY }}
-    TF_VAR_eks_version: ${{ inputs.eks_version }}
+    TF_VAR_eks_version: ${{ vars.EKS_VERSION }}
 
 jobs:
   plan_and_apply:
@@ -35,7 +35,8 @@ jobs:
       - name: Show Inputs
         run: |
           echo "Region: $TF_VAR_region"
-          echo "Billing Code: ${{ inputs.backend_region }}"
+          echo "Billing Code: ${{ secrets.AWS_ROLE_TO_ASSUME }}"
+          echo "env: ${{ inputs.environment }}"
       - name: Configure AWS Credentials
         uses: aws-actions/configure-aws-credentials@v4
         with:
@@ -56,7 +57,7 @@ jobs:
             terraform init -reconfigure \
             -backend-config="bucket=${{ secrets.BACKEND_BUCKET }}" \
             -backend-config="key=${{ vars.BACKEND_KEY }}" \
-            -backend-config="region=${{ inputs.backend_region }}" \
+            -backend-config="region=${{ vars.BACKEND_BUCKET }}" \
             -backend-config="encrypt=true" \
             -backend-config="dynamodb_table=${{ secrets.DYNAMODB_TABLE }}"
 
@@ -68,7 +69,7 @@ jobs:
         id: workspace
         run: |
             set -e
-            WORKSPACE="${{ inputs.workspace_name }}"
+            WORKSPACE="${{ vars.WORKSPACE_NAME }}"
             if terraform workspace list | grep -q "\b$WORKSPACE\b"; then
                 terraform workspace select "$WORKSPACE"
             else
