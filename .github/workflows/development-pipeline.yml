@@ -18,10 +18,8 @@ jobs:
   call-common:
     runs-on: ubuntu-latest
     environment: development
-    steps:
-      - name: Checkout Code
-        uses: actions/checkout@v3
 
+    steps:
       - name: Call Common Workflow
         uses: ./.github/workflows/common-pipeline.yml
         with:
