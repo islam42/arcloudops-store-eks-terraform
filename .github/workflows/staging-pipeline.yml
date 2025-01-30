@@ -1,21 +1,24 @@
-name: Staging Pipeline
+# Github Workflows Terraform Pipeline Provision To Deploy to AWS EKS 
+name: Staging --> Terraform CI/CD pipeline To AWS EKS Cluster - Enterprise
+
+concurrency:
+  group: staging
+  cancel-in-progress: true
 
 on:
-  push:
-    branches: [staging]
-  pull_request:
-    types: [closed]
-    branches: [staging]
+    push:
+      branches:
+        - staging
+        - feature/add_workflows_for_staging_and_production_environments
+    pull_request:
+      types: [closed]
+      branches: [staging]
 
 jobs:
   call-common:
+    permissions:
+      id-token: write
+      contents: read
     uses: ./.github/workflows/common-pipeline.yml
     with:
-      aws_region: ${{ vars.AWS_REGION }}
-      billing_code: ${{ vars.BILLING_CODE }}
-      aws_instance_type: ${{ vars.AWS_INSTANCE_TYPE }}
-      backend_region: ${{ vars.BACKEND_REGION }}
-      eks_version: ${{ vars.EKS_VERSION }}
-      workspace_name: ${{ vars.WORKSPACE_NAME }}
-    secrets: inherit
-      
+      environment: staging
