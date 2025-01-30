@@ -45,6 +45,10 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
+      - name: Show Inputs
+        run: |
+          echo "Region: $TF_VAR_region"
+          echo "Billing Code: $TF_VAR_billing_code"
       - name: Configure AWS Credentials
         uses: aws-actions/configure-aws-credentials@v4
         with:
