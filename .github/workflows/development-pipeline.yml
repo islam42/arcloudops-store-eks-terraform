@@ -14,14 +14,14 @@ on:
       types: [closed]
       branches: [development]
 
-env:
-  AWS_REGION: "us-east-1"
-  BILLING_CODE: "12345"
-  AWS_INSTANCE_TYPE: "t2.micro"
-  BACKEND_REGION: "us-west-2"
-  EKS_VERSION: "1.25"
-  WORKSPACE_NAME: "dev-workspace"
-
 jobs:
   call-common:
+    environment: development
     uses: ./.github/workflows/common-pipeline.yml
+    with:
+      aws_region: ${{ vars.AWS_REGION }}
+      billing_code: ${{ vars.BILLING_CODE }}
+      aws_instance_type: ${{ vars.AWS_INSTANCE_TYPE }}
+      backend_region: ${{ vars.BACKEND_REGION }}
+      eks_version: ${{ vars.EKS_VERSION }}
+      workspace_name: ${{ vars.WORKSPACE_NAME }}
