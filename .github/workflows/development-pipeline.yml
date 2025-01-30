@@ -16,6 +16,9 @@ on:
 
 jobs:
   call-common:
+    permissions:
+      id-token: write
+      contents: read
     uses: ./.github/workflows/common-pipeline.yml
     with:
       environment: development
