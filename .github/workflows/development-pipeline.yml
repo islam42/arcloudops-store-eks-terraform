@@ -39,4 +39,3 @@ jobs:
           backend_region: ${{ env.BACKEND_REGION }}
           eks_version: ${{ env.EKS_VERSION }}
           workspace_name: ${{ env.WORKSPACE_NAME }}
-        secrets: inherit
