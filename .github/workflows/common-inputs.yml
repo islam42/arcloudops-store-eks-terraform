@@ -1,34 +1,34 @@
-# common_inputs.yml
-common_inputs: &common_inputs
-    aws_instance_type:
-        type: string
-        required: true
-    aws_region:
-        type: string
-        required: true
-    billing_code:
-        type: string
-        required: true
-    backend_region:
-        type: string
-        required: true
-    eks_version:
-        type: string
-        required: true
-    workspace_name:
-        type: string
-        required: true
+# # common_inputs.yml
+# common_inputs: &common_inputs
+#     aws_instance_type:
+#         type: string
+#         required: true
+#     aws_region:
+#         type: string
+#         required: true
+#     billing_code:
+#         type: string
+#         required: true
+#     backend_region:
+#         type: string
+#         required: true
+#     eks_version:
+#         type: string
+#         required: true
+#     workspace_name:
+#         type: string
+#         required: true
 
-# secrets: &secrets
-#     dynamodb_table:
-#         type: string
-#         required: true
-#     backend_bucket:
-#         type: string
-#         required: true
-#     aws_role_to_assume:
-#         type: string
-#         required: true
+# # secrets: &secrets
+# #     dynamodb_table:
+# #         type: string
+# #         required: true
+# #     backend_bucket:
+# #         type: string
+# #         required: true
+# #     aws_role_to_assume:
+# #         type: string
+# #         required: true
     
     
 

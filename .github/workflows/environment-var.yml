@@ -1,16 +1,16 @@
-env: &env
-    TF_INPUT: true
-    TF_IN_AUTOMATION: true
-    TF_LOG: INFO
-    TF_VAR_aws_instance_count: ${{ inputs.aws_instance_count }}
-    TF_VAR_billing_code: ${{ inputs.billing_code }}
-    TF_VAR_vpc_cidr_block: ${{ vars.vpc_cidr_block }}
-    TF_VAR_vpc_subnet_count: ${{ vars.vpc_subnet_count }}
-    TF_VAR_vpc_subnet_mask: ${{ vars.vpc_subnet_mask }}
-    TF_VAR_project: ${{ vars.project }}
-    TF_VAR_company: ${{ vars.company }}
-    TF_VAR_region: ${{ inputs.aws_region }}
-    TF_VAR_node_desired_capacity: ${{ vars.node_desired_capacity }}
-    TF_VAR_node_maximum_capacity: ${{ vars.node_maximum_capacity }}
-    TF_VAR_node_minumum_capacity: ${{ vars.node_minumum_capacity }}
-    TF_VAR_eks_version: ${{ inputs.eks_version }}
+# env: &env
+#     TF_INPUT: true
+#     TF_IN_AUTOMATION: true
+#     TF_LOG: INFO
+#     TF_VAR_aws_instance_count: ${{ inputs.aws_instance_count }}
+#     TF_VAR_billing_code: ${{ inputs.billing_code }}
+#     TF_VAR_vpc_cidr_block: ${{ vars.vpc_cidr_block }}
+#     TF_VAR_vpc_subnet_count: ${{ vars.vpc_subnet_count }}
+#     TF_VAR_vpc_subnet_mask: ${{ vars.vpc_subnet_mask }}
+#     TF_VAR_project: ${{ vars.project }}
+#     TF_VAR_company: ${{ vars.company }}
+#     TF_VAR_region: ${{ inputs.aws_region }}
+#     TF_VAR_node_desired_capacity: ${{ vars.node_desired_capacity }}
+#     TF_VAR_node_maximum_capacity: ${{ vars.node_maximum_capacity }}
+#     TF_VAR_node_minumum_capacity: ${{ vars.node_minumum_capacity }}
+#     TF_VAR_eks_version: ${{ inputs.eks_version }}
