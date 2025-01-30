@@ -3,24 +3,10 @@ name: Terraform CI/CD Pipeline
 on:
   workflow_call:
     inputs:
-        aws_region:
-            type: string
+        environment:
+            description: 'The environment to deploy to'
             required: true
-        billing_code:
-            type: string
-            required: true
-        aws_instance_type:
-            type: string
-            required: true
-        backend_region:
-            type: string
-            required: true
-        eks_version:
-            type: string
-            required: true
-        workspace_name:
-            type: string
-            required: true
+            type: environment
 
 env:
     TF_INPUT: true
