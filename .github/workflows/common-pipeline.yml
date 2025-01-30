@@ -35,12 +35,12 @@ jobs:
       - name: Show Inputs
         run: |
           echo "Region: $TF_VAR_region"
-          echo "Billing Code: ${{ secrets.AWS_ROLE_TO_ASSUME }}"
+          echo "Billing Code: ${{ vars.AWS_ROLE_TO_ASSUME }}"
           echo "env: ${{ inputs.environment }}"
       - name: Configure AWS Credentials
         uses: aws-actions/configure-aws-credentials@v4
         with:
-            role-to-assume: ${{ secrets.AWS_ROLE_TO_ASSUME }}
+            role-to-assume: ${{ vars.AWS_ROLE_TO_ASSUME }}
             role-session-name: ${{ vars.SESSION_NAME }}
             aws-region: ${{ vars.AWS_REGION }}
       - name: Checkout repository
@@ -55,11 +55,11 @@ jobs:
         working-directory: ./deployment/terraform/terraform-provision-ekscluster-use-case-1
         run: | 
             terraform init -reconfigure \
-            -backend-config="bucket=${{ secrets.BACKEND_BUCKET }}" \
+            -backend-config="bucket=${{ vars.BACKEND_BUCKET }}" \
             -backend-config="key=${{ vars.BACKEND_KEY }}" \
             -backend-config="region=${{ vars.BACKEND_BUCKET }}" \
             -backend-config="encrypt=true" \
-            -backend-config="dynamodb_table=${{ secrets.DYNAMODB_TABLE }}"
+            -backend-config="dynamodb_table=${{ vars.DYNAMODB_TABLE }}"
 
       - name: Terraform Format
         id: format
