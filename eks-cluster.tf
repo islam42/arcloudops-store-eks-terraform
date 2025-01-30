@@ -52,7 +52,7 @@ resource "aws_eks_node_group" "arcloudops-node-group" {
   node_group_name = "${local.cluster_name}-nodegroup"
   node_role_arn   = aws_iam_role.eks_node_role.arn
 
-  subnet_ids = module.vpc.public_subnets
+  subnet_ids = module.vpc.private_subnets
 
   instance_types = [var.aws_instance_type]
 
