@@ -60,7 +60,6 @@ jobs:
           terraform_version: 1.5.7
 
       - name: Terraform Init
-        run: terraform init
         working-directory: ./deployment/terraform/terraform-provision-ekscluster-use-case-1
         run: | 
             terraform init -reconfigure \
