@@ -28,8 +28,8 @@ jobs:
       - name: Show Inputs
         run: |
           echo "Region A: $AWS_REGION"
-          echo "Billing Code: $BILLING_CODE"
-      - name: calling-workflow:
+          echo "Billing Code: ${{ vars.AWS_REGION }}"
+      - name: calling-workflow
         uses: ./.github/workflows/common-pipeline.yml
         with:
           aws_region: ${{ env.AWS_REGION }}
