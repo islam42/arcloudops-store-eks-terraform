@@ -2,10 +2,13 @@ name: Terraform CI/CD Pipeline
 
 on:
   workflow_call:
-    inputs: *common_inputs
-    secrets: *secrets
+    inputs:
+        <<: *common_inputs
+    secrets:
+        <<: *secrets
 
-env: *env
+env:
+    <<: *env
 
 jobs:
   plan_and_apply:
