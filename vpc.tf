@@ -19,6 +19,11 @@ module "vpc" {
     "kubernetes.io/role/elb"                      = "1",
     "kubernetes.io/cluster/${local.cluster_name}" = "owned"
   }
+
+  // If you use private subnets for your workers, you must configure NAT Gateways for the workers to access the internet
+  # enable_nat_gateway    = true
+  # single_nat_gateway    = true
+
   enable_nat_gateway      = false
   enable_vpn_gateway      = false
   map_public_ip_on_launch = true
