@@ -25,10 +25,3 @@ env:
 jobs:
   call-common:
     uses: ./.github/workflows/common-pipeline.yml
-    with:
-      aws_region: ${{ env.AWS_REGION }}
-      billing_code: ${{ env.BILLING_CODE }}
-      aws_instance_type: ${{ env.AWS_INSTANCE_TYPE }}
-      backend_region: ${{ env.BACKEND_REGION }}
-      eks_version: ${{ env.EKS_VERSION }}
-      workspace_name: ${{ env.WORKSPACE_NAME }}

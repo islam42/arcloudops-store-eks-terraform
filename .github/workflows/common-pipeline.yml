@@ -2,42 +2,23 @@ name: Terraform CI/CD Pipeline
 
 on:
   workflow_call:
-    inputs:
-        aws_instance_type:
-            type: string
-            required: true
-        aws_region:
-            type: string
-            required: true
-        billing_code:
-            type: string
-            required: true
-        backend_region:
-            type: string
-            required: true
-        eks_version:
-            type: string
-            required: true
-        workspace_name:
-            type: string
-            required: true
 
 env:
     TF_INPUT: true
     TF_IN_AUTOMATION: true
     TF_LOG: INFO
-    TF_VAR_aws_instance_count: ${{ inputs.aws_instance_count }}
-    TF_VAR_billing_code: ${{ inputs.billing_code }}
+    TF_VAR_aws_instance_count: ${{ vars.aws_instance_count }}
+    TF_VAR_billing_code: ${{ vars.billing_code }}
     TF_VAR_vpc_cidr_block: ${{ vars.vpc_cidr_block }}
     TF_VAR_vpc_subnet_count: ${{ vars.vpc_subnet_count }}
     TF_VAR_vpc_subnet_mask: ${{ vars.vpc_subnet_mask }}
     TF_VAR_project: ${{ vars.project }}
     TF_VAR_company: ${{ vars.company }}
-    TF_VAR_region: ${{ inputs.aws_region }}
+    TF_VAR_region: ${{ vars.aws_region }}
     TF_VAR_node_desired_capacity: ${{ vars.node_desired_capacity }}
     TF_VAR_node_maximum_capacity: ${{ vars.node_maximum_capacity }}
     TF_VAR_node_minumum_capacity: ${{ vars.node_minumum_capacity }}
-    TF_VAR_eks_version: ${{ inputs.eks_version }}
+    TF_VAR_eks_version: ${{ vars.eks_version }}
 
 jobs:
   plan_and_apply:
@@ -54,7 +35,7 @@ jobs:
         with:
             role-to-assume: ${{ secrets.AWS_ROLE_TO_ASSUME }}
             role-session-name: ${{ vars.SESSION_NAME }}
-            aws-region: ${{ inputs.aws_region }}
+            aws-region: ${{ vars.aws_region }}
       - name: Checkout repository
         uses: actions/checkout@v2
       
@@ -69,7 +50,7 @@ jobs:
             terraform init -reconfigure \
             -backend-config="bucket=${{ secrets.BACKEND_BUCKET }}" \
             -backend-config="key=${{ vars.BACKEND_KEY }}" \
-            -backend-config="region=${{ inputs.backend_region }}" \
+            -backend-config="region=${{ vars.backend_region }}" \
             -backend-config="encrypt=true" \
             -backend-config="dynamodb_table=${{ secrets.DYNAMODB_TABLE }}"
 
@@ -81,7 +62,7 @@ jobs:
         id: workspace
         run: |
             set -e
-            WORKSPACE="${{ inputs.workspace_name }}"
+            WORKSPACE="${{ vars.workspace_name }}"
             if terraform workspace list | grep -q "\b$WORKSPACE\b"; then
                 terraform workspace select "$WORKSPACE"
             else
