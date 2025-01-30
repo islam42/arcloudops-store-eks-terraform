@@ -7,6 +7,9 @@ on:
             type: string
             description: environment to deploy to
             required: true
+permissions:
+    id-token: write
+    contents: read
 
 env:
     TF_INPUT: true
