@@ -1,0 +1,24 @@
+# Github Workflows Terraform Pipeline Provision To Deploy to AWS EKS 
+name: Development --> Terraform CI/CD pipeline To AWS EKS Cluster - Enterprise
+
+concurrency:
+  group: development
+  cancel-in-progress: true
+
+on:
+    push:
+      branches:
+        - development
+        - feature/add_workflows_for_staging_and_production_environments
+    pull_request:
+      types: [closed]
+      branches: [development]
+
+jobs:
+  call-common:
+    permissions:
+      id-token: write
+      contents: read
+    uses: ./.github/workflows/common-pipeline.yml
+    with:
+      environment: development
