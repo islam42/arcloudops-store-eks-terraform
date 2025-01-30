@@ -16,12 +16,15 @@ on:
 
 jobs:
   call-common:
+    runs-on: ubuntu-latest
     environment: development
-    uses: ./.github/workflows/common-pipeline.yml
-    with:
-      aws_region: ${{ vars.AWS_REGION }}
-      billing_code: ${{ vars.BILLING_CODE }}
-      aws_instance_type: ${{ vars.AWS_INSTANCE_TYPE }}
-      backend_region: ${{ vars.BACKEND_REGION }}
-      eks_version: ${{ vars.EKS_VERSION }}
-      workspace_name: ${{ vars.WORKSPACE_NAME }}
+    steps:
+      - name: Call Common Workflow
+        uses: ./.github/workflows/common-pipeline.yml
+        with:
+          aws_region: ${{ vars.AWS_REGION }}
+          billing_code: ${{ vars.BILLING_CODE }}
+          aws_instance_type: ${{ vars.AWS_INSTANCE_TYPE }}
+          backend_region: ${{ vars.BACKEND_REGION }}
+          eks_version: ${{ vars.EKS_VERSION }}
+          workspace_name: ${{ vars.WORKSPACE_NAME }}
